@@ -1,0 +1,46 @@
+name: Sync ERYNDEX source from personal portfolio
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-eryndex-source
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Eryndex company repository
+        uses: actions/checkout@v4
+
+      - name: Check out personal portfolio source
+        uses: actions/checkout@v4
+        with:
+          repository: arshiataheri851-ops/portfolio
+          ref: main
+          path: _upstream-personal-portfolio
+          # The source repository is public; no personal access token is required.
+
+      - name: Mirror the eryndex directory
+        run: |
+          mkdir -p eryndex
+          rsync -a --delete _upstream-personal-portfolio/eryndex/ eryndex/
+          rm -rf _upstream-personal-portfolio
+
+      - name: Commit synchronized changes
+        run: |
+          if git diff --quiet -- eryndex/; then
+            echo "ERYNDEX source is already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add eryndex/
+          git commit -m "chore: sync ERYNDEX source from personal portfolio"
+          git push
