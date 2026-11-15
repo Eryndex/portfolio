@@ -8,6 +8,9 @@ This repository contains the ERYNDEX company website and a collection of enginee
 - Main website: https://eryndex.net/
 - Persian: https://eryndex.net/fa/
 - Website source: [projects/eryndex-company-website](projects/eryndex-company-website/)
+- Full company site and profile source mirror: [eryndex/](eryndex/)
+- Upstream source: [arshiataheri851-ops/portfolio/eryndex](https://github.com/arshiataheri851-ops/portfolio/tree/main/eryndex)
+- The `eryndex/` directory is synchronized from the personal portfolio by the scheduled GitHub Actions workflow.
 
 The site is a static bilingual HTML/CSS/JavaScript application. GitHub Actions assembles the website and the RoutePilot and SignalDesk interactive demos for GitHub Pages. The contact form currently falls back to the visitor's email application until its secure backend is deployed and tested.
 
